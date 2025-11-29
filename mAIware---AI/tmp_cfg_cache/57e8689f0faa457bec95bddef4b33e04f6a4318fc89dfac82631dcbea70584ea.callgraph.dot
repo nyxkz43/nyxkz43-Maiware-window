@@ -1,0 +1,50 @@
+digraph callgraph {
+  // Graph-level styling
+  graph [bgcolor="#0a0e27", pad="0.5", nodesep="1.0", ranksep="1.2", splines=ortho];
+  node [shape=box, style="filled,rounded", fontname="Fira Code,Consolas,monospace", fontsize=11, fontcolor="#e0e0e0", penwidth=2];
+  edge [color="#4a9eff88", penwidth=2.0, arrowsize=0.8];
+
+  "0xf1d0200" [label="sub_f1d0200\n0xf1d0200", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1cff06" [label="sub_f1cff06\n0xf1cff06", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d0107" [label="sub_f1d0107\n0xf1d0107", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d0607" [label="sub_f1d0607\n0xf1d0607", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d018c" [label="sub_f1d018c\n0xf1d018c", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d0310" [label="sub_f1d0310\n0xf1d0310", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d059f" [label="sub_f1d059f\n0xf1d059f", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d0836" [label="sub_f1d0836\n0xf1d0836", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d053b" [label="sub_f1d053b\n0xf1d053b", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d0749" [label="sub_f1d0749\n0xf1d0749", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d0149" [label="sub_f1d0149\n0xf1d0149", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d07d1" [label="sub_f1d07d1\n0xf1d07d1", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d01d1" [label="sub_f1d01d1\n0xf1d01d1", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d0355" [label="sub_f1d0355\n0xf1d0355", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d02e3" [label="sub_f1d02e3\n0xf1d02e3", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d00ee" [label="sub_f1d00ee\n0xf1d00ee", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1ce1f1" [label="sub_f1ce1f1\n0xf1ce1f1", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1d02f3" [label="_start\n0xf1d02f3", fillcolor="#1a535c:#264653", gradientangle=90, color="#4ecdc4"];
+  "0xf1e7b79" [label="sub_f1e7b79\n0xf1e7b79", fillcolor="#1e2749", color="#4361ee"];
+  "0xf1cf97f" [label="sub_f1cf97f\n0xf1cf97f", fillcolor="#1e2749", color="#4361ee"];
+
+  // Edges
+  "0xf1d0200" -> "0xf1d00ee";
+  "0xf1d0107" -> "0xf1d00ee";
+  "0xf1d0607" -> "0xf1d0310";
+  "0xf1d018c" -> "0xf1d00ee";
+  "0xf1d059f" -> "0xf1d0310";
+  "0xf1d0836" -> "0xf1d07d1";
+  "0xf1d053b" -> "0xf1d0310";
+  "0xf1d0749" -> "0xf1d0310";
+  "0xf1d0749" -> "0xf1d0355";
+  "0xf1d0149" -> "0xf1d00ee";
+  "0xf1d01d1" -> "0xf1d00ee";
+  "0xf1d00ee" -> "0xf1d02e3";
+  "0xf1d00ee" -> "0xf1cff06";
+  "0xf1d00ee" -> "0xf1d0355";
+  "0xf1d00ee" -> "0xf1cf97f";
+  "0xf1ce1f1" -> "0xf1d0310";
+  "0xf1d02f3" -> "0xf1d07d1";
+  "0xf1d02f3" -> "0xf1d0310";
+  "0xf1d02f3" -> "0xf1d00ee";
+  "0xf1e7b79" -> "0xf1d0310";
+  "0xf1e7b79" -> "0xf1d0355";
+}

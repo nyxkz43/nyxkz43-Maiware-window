@@ -1,0 +1,20 @@
+digraph callgraph {
+  // Graph-level styling
+  graph [bgcolor="#0a0e27", pad="0.5", nodesep="1.0", ranksep="1.2", splines=ortho];
+  node [shape=box, style="filled,rounded", fontname="Fira Code,Consolas,monospace", fontsize=11, fontcolor="#e0e0e0", penwidth=2];
+  edge [color="#4a9eff88", penwidth=2.0, arrowsize=0.8];
+
+  "0x436103" [label="sub_436103\n0x436103", fillcolor="#1e2749", color="#4361ee"];
+  "0x436027" [label="sub_436027\n0x436027", fillcolor="#1e2749", color="#4361ee"];
+  "0x43606d" [label="sub_43606d\n0x43606d", fillcolor="#1e2749", color="#4361ee"];
+  "0x43618d" [label="sub_43618d\n0x43618d", fillcolor="#1e2749", color="#4361ee"];
+  "0x436171" [label="sub_436171\n0x436171", fillcolor="#1e2749", color="#4361ee"];
+  "0x436037" [label="_start\n0x436037", fillcolor="#1a535c:#264653", gradientangle=90, color="#4ecdc4"];
+
+  // Edges
+  "0x436103" -> "0x436027";
+  "0x43606d" -> "0x436027";
+  "0x43618d" -> "0x436171";
+  "0x436171" -> "0x436027";
+  "0x436037" -> "0x436027";
+}

@@ -1,0 +1,52 @@
+digraph callgraph {
+  // Graph-level styling
+  graph [bgcolor="#0a0e27", pad="0.5", nodesep="1.0", ranksep="1.2", splines=ortho];
+  node [shape=box, style="filled,rounded", fontname="Fira Code,Consolas,monospace", fontsize=11, fontcolor="#e0e0e0", penwidth=2];
+  edge [color="#4a9eff88", penwidth=2.0, arrowsize=0.8];
+
+  "0x4a820f08" [label="sub_4a820f08\n0x4a820f08", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a820988" [label="sub_4a820988\n0x4a820988", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a821312" [label="sub_4a821312\n0x4a821312", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a821396" [label="sub_4a821396\n0x4a821396", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a821419" [label="sub_4a821419\n0x4a821419", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a82111c" [label="sub_4a82111c\n0x4a82111c", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a820e1d" [label="sub_4a820e1d\n0x4a820e1d", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a8211a4" [label="sub_4a8211a4\n0x4a8211a4", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a820f28" [label="sub_4a820f28\n0x4a820f28", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a8209a8" [label="sub_4a8209a8\n0x4a8209a8", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a82092a" [label="sub_4a82092a\n0x4a82092a", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a820f33" [label="_start\n0x4a820f33", fillcolor="#1a535c:#264653", gradientangle=90, color="#4ecdc4"];
+  "0x4a8213b6" [label="sub_4a8213b6\n0x4a8213b6", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a82093a" [label="sub_4a82093a\n0x4a82093a", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a8211d0" [label="sub_4a8211d0\n0x4a8211d0", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a821058" [label="sub_4a821058\n0x4a821058", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a821161" [label="sub_4a821161\n0x4a821161", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a820e6f" [label="sub_4a820e6f\n0x4a820e6f", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a820eef" [label="sub_4a820eef\n0x4a820eef", fillcolor="#1e2749", color="#4361ee"];
+  "0x4a820c7e" [label="sub_4a820c7e\n0x4a820c7e", fillcolor="#1e2749", color="#4361ee"];
+
+  // Edges
+  "0x4a820f08" -> "0x4a820e1d";
+  "0x4a820988" -> "0x4a82111c";
+  "0x4a820988" -> "0x4a8209a8";
+  "0x4a821312" -> "0x4a82111c";
+  "0x4a821312" -> "0x4a821161";
+  "0x4a821419" -> "0x4a8213b6";
+  "0x4a820e1d" -> "0x4a82111c";
+  "0x4a820e1d" -> "0x4a820f28";
+  "0x4a820e1d" -> "0x4a821396";
+  "0x4a820e1d" -> "0x4a821161";
+  "0x4a820e1d" -> "0x4a820c7e";
+  "0x4a8211a4" -> "0x4a82111c";
+  "0x4a8209a8" -> "0x4a821161";
+  "0x4a82092a" -> "0x4a82111c";
+  "0x4a82092a" -> "0x4a82093a";
+  "0x4a820f33" -> "0x4a8213b6";
+  "0x4a820f33" -> "0x4a820e1d";
+  "0x4a82093a" -> "0x4a821161";
+  "0x4a8211d0" -> "0x4a821161";
+  "0x4a821058" -> "0x4a82111c";
+  "0x4a821058" -> "0x4a821161";
+  "0x4a820e6f" -> "0x4a820e1d";
+  "0x4a820eef" -> "0x4a820e1d";
+}

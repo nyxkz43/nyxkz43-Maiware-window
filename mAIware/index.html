@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mAIware AI Malware Detection Demo</title>
+    <!-- Font Awesome for icons (which you already had) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Chart.js for stats (which you already had) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <!-- QRCode.js for QR generation -->
+    <script src="assets/vendor/qrcode.min.js"></script>
+    <!-- Link to the CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="top-nav">
+        <div class="logo"> <i class="fas fa-shield-virus"></i> <span>mAIware</span> </div>
+        <div class="nav-links"> <a href="#" id="home-btn" class="nav-link" data-tooltip="Home"><i class="fas fa-home"></i><span class="link-text">Home</span></a> <a href="#" class="nav-link" data-tooltip="Login"><i class="fas fa-sign-in-alt"></i><span class="link-text">Login</span></a> <a href="#" class="nav-link" data-tooltip="Sign Up"><i class="fas fa-user-plus"></i><span class="link-text">Sign Up</span></a> <a href="#" class="nav-link" data-tooltip="Community"><i class="fas fa-users"></i><span class="link-text">Community</span></a> <a href="#" class="nav-link" data-tooltip="API Docs"><i class="fas fa-code"></i><span class="link-text">API</span></a> <a href="#" id="history-btn" class="nav-link" data-tooltip="Scan History"><i class="fas fa-history"></i><span class="link-text">History</span></a> <a href="#" class="nav-link" id="theme-toggle" data-tooltip="Toggle Theme"> <i class="fas fa-sun"></i> </a> </div>
+    </nav>
+
+    <main class="main-container">
+        <!-- Column 1 -->
+        <div class="scanner-wrapper">
+            <!-- Main Scanner Box -->
+            <div class="scanner-container">
+                <h1>AI Malware Detection</h1>
+                
+                <!-- Navigation Controls (Top Position) -->
+                <div class="scan-navigation scan-navigation-top">
+                    <button id="prev-scan-btn" class="nav-btn" disabled>
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <span id="nav-info" class="nav-info">1 of 1</span>
+                    <button id="next-scan-btn" class="nav-btn" disabled>
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <!-- State 1: Initial -->
+                <div id="initial-state" class="scanner-state active">
+                    <p>Watching your Downloads folder for new files...</p>
+                    <div id="drop-zone" class="upload-zone"> <i class="upload-icon fas fa-eye"></i>
+                        <h3>Automatic Scanning Active</h3>
+                        <span>(Download a file to begin)</span>
+                    </div>
+                    <div class="manual-upload">
+                        <button id="manual-scan-btn" class="btn btn-primary" type="button">
+                            <i class="fas fa-upload"></i>
+                            Scan a File Manually
+                        </button>
+                        <button id="manual-folder-scan-btn" class="btn btn-secondary" type="button">
+                            <i class="fas fa-folder-open"></i>
+                            Scan a Folder
+                        </button>
+                        <p class="manual-scan-hint">Pick a file or folder, or keep downloading files to scan automatically.</p>
+                        <p id="manual-scan-error" class="manual-error" role="alert"></p>
+                    </div>
+                </div>
+
+                <!-- State 2: Analyzing -->
+                <div id="analyzing-state" class="scanner-state">
+                    <div class="analyzing-icon">
+                        <div class="loader"></div>
+                    </div>
+                    <h3>Analyzing...</h3> <span class="filename" id="analyzing-filename">demo_file.exe</span> </div>
+
+                <!-- State 3: Result -->
+                <div id="result-state" class="scanner-state"> <i class="result-icon" id="result-icon"></i>
+                    <h2 id="result-text"></h2>
+                    <div class="filename" id="result-filename"></div>
+                    <p id="result-details"></p>
+                    <!-- Removed the resetDemo() button as it's automatic now -->
+                </div>
+                <div id="non-pe-result" class="scanner-state non-pe-result">
+                    <div class="non-pe-icon"><i class="fas fa-file"></i></div>
+                    <h2 id="non-pe-title">File is not a Windows PE executable</h2>
+                    <p class="filename" id="non-pe-filename"></p>
+                    <div class="non-pe-hash-grid">
+                        <div class="non-pe-hash">
+                            <h4>SHA256</h4>
+                            <p id="non-pe-hash-sha256">...</p>
+                        </div>
+                        <div class="non-pe-hash">
+                            <h4>MD5</h4>
+                            <p id="non-pe-hash-md5">...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Details (Shows on result) -->
+            <div class="analysis-details-container" id="analysis-details-wrapper">
+                <div class="progress-header">
+                    <h3>Malware Confidence</h3> <span class="score-percentage" id="score-percentage">0%</span> </div>
+                <div class="progress-bar-background">
+                    <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%;"></div>
+                </div>
+
+                <!-- This grid holds Vendor and Signature -->
+                <div class="details-grid">
+                    <!-- Vendor UI Container -->
+                    <div class="details-section" id="details-vendor">
+                        <h4>Vendor Analysis</h4>
+                        <div class="vendor-info">
+                            <i class="fas fa-question-circle"></i>
+                            <span>Scanning...</span>
+                        </div>
+                    </div>
+                    <!-- Signature UI Container -->
+                    <div class="details-section" id="details-signature">
+                        <h4>Digital Signature</h4>
+                        <div class="signature-info">
+                            <i class="fas fa-question-circle"></i>
+                            <span>Checking...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reasoning (File Type/Packer) -->
+                <div class="details-section">
+                    <h4>Key Findings</h4>
+                    <p id="details-reasoning">...</p>
+                </div>
+                
+                <div class="details-section">
+                    <h4>SHA256 Hash</h4>
+                    <p class="hash-text" id="details-hash-sha256">...</p>
+                </div>
+
+                <div class="details-section">
+                    <h4>MD5 Hash</h4>
+                    <p class="hash-text" id="details-hash-md5">...</p>
+                </div>
+
+                <div class="details-section">
+                    <h4>System IP</h4>
+                    <p class="hash-text" id="details-system-ip">Detecting...</p>
+                </div>
+
+                <!-- QR Code for PE results -->
+                <div class="details-section qr-section" id="qr-section" style="display:none;">
+                    <h4>Scan Report QR</h4>
+                    <div id="qr-code" class="qr-code-wrapper"></div>
+                </div>
+
+                <!-- AI Model Voting Results -->
+                <div class="details-section" id="ai-voting-section" style="display:none;">
+                    <h4>AI Model Voting</h4>
+                    <div class="ai-voting-display">
+                        <div class="vote-bar">
+                            <span class="vote-label">Benign:</span>
+                            <div class="vote-bar-bg">
+                                <div class="vote-bar-fill vote-benign" id="vote-bar-benign"></div>
+                            </div>
+                            <span class="vote-count" id="vote-count-benign">0</span>
+                        </div>
+                        <div class="vote-bar">
+                            <span class="vote-label">Malware:</span>
+                            <div class="vote-bar-bg">
+                                <div class="vote-bar-fill vote-malware" id="vote-bar-malware"></div>
+                            </div>
+                            <span class="vote-count" id="vote-count-malware">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PE Metadata -->
+                <div class="details-section" id="pe-metadata-section" style="display:none;">
+                    <h4>PE File Metadata</h4>
+                    <div class="pe-metadata-grid">
+                        <div class="pe-meta-item">
+                            <span class="meta-label">File Size:</span>
+                            <span class="meta-value" id="pe-file-size">-</span>
+                        </div>
+                        <div class="pe-meta-item">
+                            <span class="meta-label">Total Entropy:</span>
+                            <span class="meta-value" id="pe-entropy-total">-</span>
+                        </div>
+                        <div class="pe-meta-item">
+                            <span class="meta-label">Sections:</span>
+                            <span class="meta-value" id="pe-sections-count">-</span>
+                        </div>
+                        <div class="pe-meta-item">
+                            <span class="meta-label">Imported DLLs:</span>
+                            <span class="meta-value" id="pe-dlls-count">-</span>
+                        </div>
+                        <div class="pe-meta-item">
+                            <span class="meta-label">Resources:</span>
+                            <span class="meta-value" id="pe-resources-count">-</span>
+                        </div>
+                        <div class="pe-meta-item">
+                            <span class="meta-label">Packed:</span>
+                            <span class="meta-value" id="pe-is-packed">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-section">
+                    <h4>What To Do Next</h4>
+                    <p id="details-recommendation">...</p>
+                </div>
+
+                <div class="btn-wrapper"> <button class="btn btn-primary"><i class="fas fa-download"></i> Download Report</button> <button class="btn btn-secondary"><i class="fas fa-flag"></i> Report False Positive</button> </div>
+            </div>
+        </div>
+
+        <!-- Column 2 -->
+        <div class="right-panel-wrapper">
+            <!-- Stats (Shows on initial) -->
+            <div class="stats-wrapper" id="stats-wrapper">
+                <div class="stats-grid">
+                    <div class="stat-card"> <i class="fas fa-virus-slash"></i>
+                        <div class="stat-content"> <span class="stat-number" id="malware-analyzed-count" data-target="0">0</span> <span class="stat-label">Malware Analyzed</span> </div>
+                    </div>
+                    <div class="stat-card"> <i class="fas fa-network-wired"></i>
+                        <div class="stat-content"> <span class="stat-number" id="lan-users-count" data-target="0">0</span> <span class="stat-label">LAN Users Connected to Server</span> </div>
+                    </div>
+                </div>
+                <div class="chart-container-wrapper">
+                    <div class="chart-container">
+                        <h3>Top 5 Malware Families (30 Days)</h3> <canvas id="topMalwareChart"></canvas> </div>
+                    <div class="chart-container">
+                        <h3>Submission Types</h3> <canvas id="malwareTypesChart"></canvas> </div>
+                </div>
+            </div>
+
+            <!-- Disassembly (Shows on analyzing/result) -->
+            <div class="disassembly-wrapper" id="disassembly-wrapper">
+                <div class="disassembly-header">
+                    <h3>Disassembly: <span id="disassembly-filename"></span></h3>
+                </div>
+                <div class="disassembly-code" id="disassembly-code"> </div>
+            </div>
+
+            <!-- File Internals (Shows on result) -->
+            <div class="file-internals-container" id="file-internals-wrapper">
+                <h3>File Internals</h3>
+                
+                <!-- Entropy UI Container -->
+                <div class="details-section">
+                    <h4>Section Entropy (0=Normal, 8=Packed/Encrypted)</h4>
+                    <div class="entropy-bars" id="entropy-bars-container">
+                        <!-- JS will populate this -->
+                    </div>
+                </div>
+                
+                <!-- Key Strings UI Container -->
+                <div class="details-section">
+                    <h4>Suspicious / Key Strings</h4>
+                    <div class="key-strings" id="key-strings-container">
+                        <!-- JS will populate this -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Width Row -->
+        <div class="graph-wrapper" id="graph-wrapper">
+            <div class="graph-header">
+                <h3>Dynamic Function Call Graph (Simulation)</h3>
+            </div>
+            <div class="call-graph-container">
+                <div class="call-graph">
+                    <div class="call-graph-image" id="call-graph-image" role="img" aria-label="Generated function call graph"></div>
+                    <div class="call-graph-placeholder" id="call-graph-placeholder">
+                        <!-- JS will populate nodes here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- History Panel (Hidden by default) -->
+    <div class="history-overlay" id="history-overlay"></div>
+    <div class="history-panel" id="history-panel">
+        <div class="history-header">
+            <h3>Scan History</h3> <button class="history-close-btn" id="history-close-btn"><i class="fas fa-times"></i></button> </div>
+        <ul class="history-list">
+            <!-- JS would populate this -->
+        </ul>
+    </div>
+
+    <!-- Scroll Zones -->
+    <div class="scroll-zone top" id="scroll-zone-top"><i class="fas fa-chevron-up"></i></div>
+    <div class="scroll-zone bottom" id="scroll-zone-bottom"><i class="fas fa-chevron-down"></i></div>
+    
+    <!-- LeaderLine for graph (which you already had) -->
+    <script src="https://cdn.jsdelivr.net/npm/leader-line-new@1.1.9/leader-line.min.js"></script>
+    <!-- Link to the JS file -->
+    <script src="script.js"></script>
+
+    <script>
+    // Apply saved theme class immediately (before DOMContentLoaded)
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const body = document.body;
+        const themeIcon = themeToggleButton.querySelector('i');
+
+        // Set icon based on current theme
+        if (body.classList.contains('light-theme')) {
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+
+        // Function to apply the saved theme
+        const applyTheme = (theme) => {
+            if (theme === 'light') {
+                body.classList.add('light-theme');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            } else {
+                body.classList.remove('light-theme');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+            
+            // Recreate charts with updated theme colors
+            if (window.recreateCharts) {
+                window.recreateCharts();
+            }
+        };
+
+        // Add click event for the toggle button
+        themeToggleButton.addEventListener('click', (e) => {
+            e.preventDefault(); // Stop the link from navigating
+            
+            // Check current theme
+            const isLightTheme = body.classList.contains('light-theme');
+            
+            // Set new theme
+            const newTheme = isLightTheme ? 'dark' : 'light';
+            
+            // Apply the new theme
+            applyTheme(newTheme);
+            
+            // Save the new theme to localStorage
+            localStorage.setItem('theme', newTheme);
+        });
+    });
+    </script>
+</body>
+</html>
